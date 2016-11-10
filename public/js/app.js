@@ -1,0 +1,15 @@
+angular.module('ysi-app',
+    ['ngRoute',
+        'appRoutes',
+        'MainCtrl',
+        'UserCtrl',
+        'AuthService',
+        'LoginCtrl',
+        'RegisterCtrl',
+        'ngResource',
+        'ProjectCtrl',
+        'ProjectServ',
+        'UsCtrl',
+        'UsServ',
+        'ConstantModule'
+    ]);

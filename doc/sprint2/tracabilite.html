@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Tracabilité Sprint 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="../../public/libs/bootstrap/dist/css/bootstrap.css">
+    <style>
+        ul {
+            counter-reset: section;
+        }
+
+        li::before {
+            counter-increment: section;
+            content:"US" counter(section)" = ";
+        }
+        tr{
+            counter-increment: idUS;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Traçabilité Equipe #5 - Sprint 2</h1>
+    
+    <a href="kanban.html"><button class="btn btn-default">Kanban Sprint 2</button></a>
+    <a target="_blank"  href="https://github.com/kbaptista/YSI-Dev"><button class="btn btn-default">Dépot Dev</button></a>
+    <a target="_blank"  href="https://github.com/kbaptista/YSI-Demo"><button class="btn btn-default">Dépot Démo</button></a>
+        <h3>Rappel des US</h3>
+        <ul class="list-group">
+<!--
+        chaque <li></li> sera précédé de USX = ,
+        où X est le numéro de l'US.
+-->
+           
+            <li class="list-group-item">En tant que visiteur, je souhaite pouvoir m'inscire sur l'application (adresse email)</li>
+            <li class="list-group-item">En tant que visiteur, je souhaite pouvoir me connecter à l'application </li>
+            <li class="list-group-item">En tant que collaborateur, je souhaite créer un product backlog avec une US "All" par défaut</li>
+            <li class="list-group-item">En tant que collaborateur, je souhaite ajouter des US au product backlog</li>
+            <li class="list-group-item">En tant que visiteur, je souhaite consulter les US d'un projet</li>
+            <li class="list-group-item">En tant que collaborateur, je souhaite supprimer une US du product backlog</li>
+            <li class="list-group-item">En tant que collaborateur, je souhaite modifier une US du product backlog</li>
+            <li class="list-group-item">En tant que collaborateur, je souhaire créer un sprint backlog et y assigner des US afin d'obtenir un planning</li>
+            <li class="list-group-item">En tant que collaborateur, je souhaite ajouter des tâches à une US du sprint</li>
+    </ul>
+    <p> Visiteur = Utilisateur non-connecté </br> 
+    Dévelopeur (dev) = Utilisateur connecté avec son compte </br>
+    Collaborateur = Developpeur affilié au projet </p>
+    
+    <table class="table table-bordered">
+        <thead>
+        <tr class="active">
+            <th>#US</th>
+            <th>#Commit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">US1</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US2</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US3</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US4</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US5</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US6</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US7</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US8</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th scope="row">US9</th>
+            <th></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
