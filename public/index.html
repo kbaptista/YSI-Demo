@@ -21,15 +21,19 @@
     <script src="/YSI-Dev/public/libs/angular/angular.js"></script>
     <script src="/YSI-Dev/public/libs/angular-route/angular-route.js"></script>
     <script src="/YSI-Dev/public/libs/angular-resource/angular-resource.js"></script>
+    <script src="/YSI-Dev/public/libs/angularUtils-pagination/dirPagination.js"></script>
     <script src="/YSI-Dev/public/js/controllers/main.controller.js"></script>
     <script src="/YSI-Dev/public/js/controllers/user.controller.js"></script>
     <script src="/YSI-Dev/public/js/controllers/login.controller.js"></script>
     <script src="/YSI-Dev/public/js/controllers/register.controller.js"></script>
     <script src="/YSI-Dev/public/js/controllers/project.controller.js"></script>
     <script src="/YSI-Dev/public/js/controllers/us.controller.js"></script>
+    <script src="/YSI-Dev/public/js/controllers/localMenu.controller.js"></script>
+    <script src="/YSI-Dev/public/js/controllers/member.controller.js"></script>
     <script src="/YSI-Dev/public/js/services/authentication.service.js"></script>
     <script src="/YSI-Dev/public/js/services/project.service.js"></script>
     <script src="/YSI-Dev/public/js/services/us.service.js"></script>
+    <script src="/YSI-Dev/public/js/services/user.service.js"></script>
     <script src="/YSI-Dev/public/js/constants.js"></script>
     <script src="/YSI-Dev/public/js/appRoutes.js"></script>
     <script src="/YSI-Dev/public/js/app.js"></script>
@@ -54,28 +58,22 @@
             <div class="sidebar content-box" style="display: block;">
                 <ul class="nav">
                     <!-- Main menu -->
-                    <li ng-if="isAuthenticated()"><a href="#/"><i class="glyphicon glyphicon-user"></i> {{name}}</a></li>
-                    <li class="current"><a href="index.html"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
-                    <li><a href="#/project"><i class="glyphicon glyphicon-calendar"></i> Projects</a></li>
-                    <li><a href="#/contact"><i class="glyphicon glyphicon-envelope"></i> Contact </a></li>
-                    <li><a href="#/about"><i class="glyphicon glyphicon-question-sign"></i> About </a></li>
-                    <li ng-if="!isAuthenticated()"><a href="#/login"><i class="glyphicon glyphicon-log-in"></i> Login </a></li>
-                    <li ng-if="!isAuthenticated()"><a href="#/signup"><i class="glyphicon glyphicon-plus"></i> Signup </a></li>
+                    <li ng-class="{ current : isActive('/')}" ng-if="isAuthenticated()"><a href="#/"><i class="glyphicon glyphicon-user"></i> {{name}}</a></li>
+                    <li ng-class="{ current : isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
+                    <li ng-class="{ current : isActive('/project')}"><a href="#/project"><i class="glyphicon glyphicon-calendar"></i> Projects</a></li>
+                    <li ng-class="{ current : isActive('/contact')}"><a href="#/contact"><i class="glyphicon glyphicon-envelope"></i> Contact </a></li>
+                    <li ng-class="{ current : isActive('/about')}"><a href="#/about"><i class="glyphicon glyphicon-question-sign"></i> About </a></li>
+                    <li ng-class="{ current : isActive('/login')}" ng-if="!isAuthenticated()"><a href="#/login"><i class="glyphicon glyphicon-log-in"></i> Login </a></li>
+                    <li ng-class="{ current : isActive('/signup')}" ng-if="!isAuthenticated()"><a href="#/signup"><i class="glyphicon glyphicon-plus"></i> Signup </a></li>
                     <li ng-if="isAuthenticated()" ng-click="logout()"><a href=""><i class="glyphicon n glyphicon-log-out"></i> logout </a></li>
                 </ul>
             </div>
-            <div  ng-if="isAuthenticated()" class="sidebar content-box" style="display: block;">
-                <ul class="nav">
-                    <li><a href="#/charts"><i class="glyphicon glyphicon-stats"></i> Statistics (Charts)</a></li>
-                    <li><a href="#/"><i class="glyphicon glyphicon-list-alt"></i> Backlog </a></li>
-                    <li><a href="#/"><i class="glyphicon glyphicon-tasks"></i> Sprint </a></li>
-                    <li><a href="#/"><i class="glyphicon glyphicon-user"></i> My team </a></li>
-                </ul>
+            <div ng-if="isAuthenticated() && displayProjectMenu == true" ng-controller="LocalMenuController">
+                <div local-menu project-id="{{projectId}}"></div>
             </div>
         </div>
 
         <div class="col-md-10">
-
             <div class="content-box-large">
                 <div class="panel-body">
                      <div class="row">
