@@ -11,8 +11,12 @@ angular.module('ysi-app',
         'ProjectServ',
         'UsCtrl',
         'UsServ',
+        'SprCtrl',
+        'SprServ',
         'ConstantModule',
         'LocalMenuCtrl',
         'MemberCtrl',
-        'UserServ'
+        'UserServ',
+        'MemberCtrl',
+        'SprDetailsCtrl'
     ]);

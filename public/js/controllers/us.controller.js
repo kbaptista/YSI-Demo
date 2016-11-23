@@ -1,15 +1,23 @@
 angular.module('UsCtrl',[]).controller('UsController', function($scope,$location, UsService,$route,$routeParams, $rootScope, ProjectService, AuthenticationService){
+    function setDisplayMenu() {
+        $rootScope.displayProjectMenu = true;
+    }
+    function setProjectName(){
+        console.log('reload');
+        $scope.projectName = ProjectService.getName();
+    }
+
+    setDisplayMenu();
+    setProjectName();
+
+    $scope.$on('$routeChangeSuccess',setDisplayMenu);
+    $scope.$on('$routeUpdate',setProjectName);
+
     var id_project = $routeParams.id;
 
-    console.log('-> us controller');
-    console.log('id : ' + id_project);
-
     $rootScope.projectId = id_project;
-    $rootScope.displayProjectMenu = true;
 
     $scope.UserStory = {};
-
-    $scope.projectName = ProjectService.getName();
 
     if(AuthenticationService.isAuthenticated()) {
         UsService.getUs(id_project).success(function (data) {

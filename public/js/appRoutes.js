@@ -52,6 +52,16 @@ angular.module('appRoutes',[]).config(['$routeProvider', function($routeProvider
             controller: 'UsController'
         })
 
+        .when('/project/:id/sprints',{
+            templateUrl: '/YSI-Dev/public/views/sprint.html',
+            controller: 'SprintController'
+        })
+
+        .when('/project/:id/sprints/:sprintName', {
+            templateUrl: '/YSI-Dev/public/views/sprintDetails.html',
+            controller: 'SprintDetailsController'
+        })
+
         .otherwise({redirectTo : '/home'});
 
 }]);

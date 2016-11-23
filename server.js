@@ -14,6 +14,10 @@ var flash = require('connect-flash');
 var configDB = require('./config/db');
 mongoose.connect(configDB.url);
 
+/* DEBBUG MONGOOSE */
+mongoose.set('debug', true);
+/* --------------- */
+
 var port = process.env.PORT || 3000;
 
 var login = require('./app/routes/login');
@@ -22,6 +26,7 @@ var user = require('./app/routes/user');
 var project = require('./app/routes/project');
 var authenticate = require('./app/routes/authenticate');
 var usersStories = require('./app/routes/userStories');
+var sprint = require('./app/routes/sprint');
 
 var app = express();
 var corsOptions = {
@@ -73,5 +78,16 @@ app.post('/userStories',usersStories.createUserStories);
 app.delete('/userStories/:id',usersStories.removeUserStory);
 app.get('/userStories/:id',usersStories.getUserStoryById);
 app.put('/userStories/:id',usersStories.updateUserStory);
+
+app.post('/sprints',sprint.createSprint);
+app.delete('/sprints/:id',sprint.removeSprint);
+app.get('/sprints/:id',sprint.getSprintById);
+app.get('/sprints/:id/project',sprint.SprintFromProject);
+app.put('/sprints/:id',sprint.updateSprint);
+app.post('/sprints/:id/us', sprint.addUsToSprint);
+
+app.post('/tasks',sprint.createTask);
+app.get('/tasks',sprint.getTasks);
+app.delete('/tasks/:id',sprint.removeTask);
 
 app.listen(port);
