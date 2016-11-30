@@ -24,13 +24,14 @@ angular.module('appRoutes',[]).config(['$routeProvider', function($routeProvider
             controller: 'ProjectController'
         })
 
-        .when('/charts',{
-            templateUrl: '/YSI-Dev/public/views/charts.html'
+        .when('/project/:id/chart',{
+            templateUrl: '/YSI-Dev/public/views/charts.html',
+            controller: 'ChartController'
         })
 
-        .when('/team',{
-            templateUrl: '/YSI-Dev/public/views/team.html',
-            controller: 'TeamController'
+        .when('/project/:id/sprints/:name/kanban',{
+            templateUrl: '/YSI-Dev/public/views/kanban.html',
+            controller: 'KanbanController'
         })
 
         .when('/about',{
@@ -60,6 +61,11 @@ angular.module('appRoutes',[]).config(['$routeProvider', function($routeProvider
         .when('/project/:id/sprints/:sprintName', {
             templateUrl: '/YSI-Dev/public/views/sprintDetails.html',
             controller: 'SprintDetailsController'
+        })
+
+        .when('/project/:id/traceability',{
+            templateUrl: '/YSI-Dev/public/views/traceability.html',
+            controller: 'UsController'
         })
 
         .otherwise({redirectTo : '/home'});

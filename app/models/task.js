@@ -4,7 +4,12 @@ var taskSchema = new mongoose.Schema();
 taskSchema.add({
     name : String,
     description : String,
-    idUs : String
+    idUs: String,
+    usName: String,
+    state : {
+        type: String,
+        enum: ['todo', 'ongoing','done']
+    }
 });
 
 var Task = mongoose.model('Task', taskSchema);
