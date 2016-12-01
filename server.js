@@ -23,6 +23,7 @@ var project = require('./app/routes/project');
 var authenticate = require('./app/routes/authenticate');
 var usersStories = require('./app/routes/userStories');
 var sprint = require('./app/routes/sprint');
+var traceability = require('./app/routes/traceability');
 
 var app = express();
 var corsOptions = {
@@ -76,6 +77,7 @@ app.get('/userStories/:id',usersStories.getUserStoryById);
 app.put('/userStories/:id',usersStories.updateUserStory);
 app.post('/userStories/:id/tasks', usersStories.addTaskToUserStory);
 app.get('/userStories/:id/tasks', usersStories.getTasksFromUs);
+app.post('/userStories/:id/tracability', usersStories.addTracabilityToUserStory);
 
 app.post('/sprints',sprint.createSprint);
 app.delete('/sprints/:id',sprint.removeSprint);
