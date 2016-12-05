@@ -1,6 +1,5 @@
-angular.module('ProjectCtrl',[]).controller('ProjectController',function($scope,$location, ProjectService,$route, AuthenticationService, $rootScope){
+angular.module('ProjectCtrl',[]).controller('ProjectController',function($scope,$location, ProjectService,$route, AuthenticationService, $rootScope, SprintService){
 
-    console.log('-> project controller');
     var currentUser = {
         id: '',
         name: '',
@@ -9,9 +8,15 @@ angular.module('ProjectCtrl',[]).controller('ProjectController',function($scope,
         idProjects: []
     };
 
+    var sprint = {
+        name:'',
+        startDate: '',
+        deadLine: '',
+        idProject: ''
+    };
+
     AuthenticationService.userConnected().success(function(user){
         currentUser = user;
-        console.log(currentUser.email);
         if(AuthenticationService.isAuthenticated()) {
             ProjectService.getProjects().success(function (allProjects) {
                     var userProjecs = []; /* display only project if current is a developper of a project or the product Owner */
@@ -19,14 +24,12 @@ angular.module('ProjectCtrl',[]).controller('ProjectController',function($scope,
                         elemProject.developpers.forEach(function(elemDev){
                             if(elemDev.email.localeCompare(currentUser.email) == 0){
                                 userProjecs.push(elemProject);
-                                console.log(elemDev.email.localeCompare(currentUser.email));
                             }
                         });
                         if(elemProject.productOwner.email.localeCompare(currentUser.email) == 0){
                             userProjecs.push(elemProject);
                         }
                     });
-                    console.log(userProjecs);
                     $scope.projects = userProjecs;
                 })
                 .error(function (status, data) {
@@ -56,9 +59,26 @@ angular.module('ProjectCtrl',[]).controller('ProjectController',function($scope,
 
 
     $scope.createProject = function createProject(name,desc,nbSprint,start,duration, isPrivate){ /* by default, Product Owner = Scrum Master = Current User */
-        console.log(isPrivate);
         if(name !== undefined && desc !== undefined && nbSprint !== undefined && start !== undefined && duration !== undefined && isPrivate !== undefined){
-            ProjectService.createProject(name,desc,nbSprint,start,duration, isPrivate, currentUser).success(function(data){
+            ProjectService.createProject(name,desc,nbSprint,start,duration, isPrivate, currentUser).success(function(project){
+                    /* Create Sprints of the project HERE
+                    ** Format Dates with momentjs and save sprint in the DB */
+                    var referenceStartDate = moment(project.startDate);
+                    var formatEndDate = moment(referenceStartDate);
+
+                    for(var i = 0; i < project.nbSprint; ++i){
+                        referenceStartDate.add(7*i,'days');
+                        formatEndDate.add(7 * project.dureeSprint, 'days');
+                        sprint = {
+                            name: i,
+                            startDate: referenceStartDate.toString(),
+                            deadLine: formatEndDate.toString(),
+                            idProject: project._id
+                        };
+                        SprintService.createSprint(sprint);
+                        referenceStartDate.subtract(7*i,'days');
+                    }
+
                     $route.reload();
                     $('#modalCreateProject').modal('hide');
                 })

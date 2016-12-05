@@ -1,0 +1,61 @@
+<div class="panel-heading">
+    <div class="panel-title"><h2>Sprints project : {{projectName}}</h2>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>Dead Line</th>
+                <th>User Stories</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="sprint in sprints | orderBy:'name'">
+                <td><a href="#/project/{{projectId}}/sprints/{{sprint.name}}" ng-click="setIdSprint(sprint._id)">Sprint {{sprint.name}}</a></td>
+                <td>{{sprint.startDate}}</td>
+                <td>{{sprint.deadLine}}</td>
+                <td><span ng-repeat="us in sprint.usNames">{{us}} </span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel-body">
+    <div class="table-responsive">
+        <h2 ng-click="test()">User Stories list</h2>
+        <div ng-show="errorMessage != ''" class="alert alert-danger" role="alert">{{errorMessage}}</div>
+        <div ng-show="successMessage != ''" class="alert alert-success" role="alert">{{successMessage}}</div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Effort</th>
+                <th>Priority</th>
+                <th>Select Sprint</th>
+                <th>Add Sprint</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="us in userStories">
+                <td>{{us.name}}</td>
+                <td>{{us.description}}</td>
+                <td>{{us.effort}}</td>
+                <td>{{us.priority}}</td>
+                <td>
+                    <select ng-model="selected.sprint" class="form-control size-select" ng-options="sprint._id as sprint.name for sprint in sprints track by sprint._id" >
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-default" ng-click="addUsToSprint(us._id)">Add</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

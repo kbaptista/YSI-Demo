@@ -24,7 +24,8 @@ exports.createUserStories = function(req,res){
         effort : req.body.effort,
         priority :req.body.priority,
         idProject :req.body.idProject,
-        sprint: req.body.sprint
+        sprint: req.body.sprint,
+        state: 'todo'
     });
 
     us.save(function(err,Us){
@@ -35,7 +36,7 @@ exports.createUserStories = function(req,res){
             console.log(err);
             res.status(500).send(err);
         }
-    })
+    });
 };
 
 exports.removeUserStory = function (req,res) {
@@ -49,8 +50,7 @@ exports.getUserStoryById = function (req, res) {
     var id = req.params.id;
     US.findById({_id:id},function (err,data) {
         if(!err){
-            var UserStory = data;
-            res.status(200).send(UserStory);
+            res.status(200).send(data);
         }
         else{
             console.error(err);
@@ -73,6 +73,11 @@ exports.updateUserStory = function (req, res) {
                     us.priority = req.body.priority;
                 if(req.body.sprint)
                     us.sprint = req.body.sprint;
+                if(req.body.tasks){
+                    updateNameById(us.tasks,req.body.tasks._id,req.body.tasks.state)
+                }
+                if(req.body.state)
+                    us.state = req.body.state;
                 us.save();
                 res.status(200).send(us);
             }
@@ -83,5 +88,90 @@ exports.updateUserStory = function (req, res) {
             console.error(err);
             res.status(500).send(err);
         }
-    })
+    });
 };
+
+exports.addTracabilityToUserStory = function(req,res){
+  US.findById(req.params.id, function(err,us){
+      if(!err){
+          if(us){
+              us.commit = req.body.commit;
+              us.save();
+              res.status(200).send(us);
+          }
+          else{
+              res.status(404).send(err);
+          }
+      }
+      else{
+          res.status(500).send(err);
+      }
+  })
+};
+
+exports.addTaskToUserStory = function(req,res){
+  var find = false;
+    US.findById(req.params.id, function(err, us){
+       if(!err){
+           if(us){
+               if(req.body.task){
+                   us.tasks.forEach(function(element){
+                       if(element._id.toString().localeCompare(req.body.task._id) == 0){
+                           find = true;
+                       }
+                   });
+                   if(find == false){
+                       us.tasks.push(req.body.task);
+                       us.save();
+                       res.status(200).send(us);
+                   }
+                   else{
+                       res.status(409).send('tasks ' + req.body.task.name + ' already exists in the US');
+                   }
+               }
+           }
+           else{
+               res.status(404).send(err);
+           }
+       }
+       else{
+           console.error(err);
+           res.status(500).send(err);
+       }
+
+    });
+};
+
+exports.getTasksFromUs = function(req,res){
+    US.findById(req.params.id, function(err,us){
+       if(!err){
+           if(us){
+               var tasks = [];
+               us.tasks.forEach(function(element){
+                  tasks.push(element);
+               });
+               res.status(200).send(tasks);
+           }
+           else{
+               res.status(404).send(err);
+           }
+       }
+        else{
+           console.error(err);
+           res.status(500).send(err);
+       }
+    });
+};
+
+function updateNameById(obj, id, value) {
+    Object.keys(obj).some(function(key) {
+        if (obj[key]._id == id) {
+            obj[key].state = value;
+            return true;  // Stops looping
+        }
+        // Recurse over lower objects
+        else if (obj[key].groups) {
+            return updateNameById(obj[key].groups, id, value);
+        }
+    })
+}
